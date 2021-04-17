@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include <ranges>
+#include <map>
 
 using namespace std;
 int main() {
@@ -18,15 +19,24 @@ int main() {
     std::cout << "Hello, World!" << std::endl;
     vector<int> v = {1, 2, 3, 5};
     stringstream ss;
-    to_stream(ss, v);
-    to_stream(ss, 1);
+    ss << v;
+    ss << 1;
+//    to_stream(ss, v);
+//    to_stream(ss, 1);
     cout << ss.str() << endl;
 
     vector<vector<int>> vv = {{1, 2}, {2, 3, 4}, {3, 4, 5, 6}};
-    to_stream(cout, vv);
-    cout << endl;
+    cout << vv << endl;
 
     vector<set<char>> vse = {{'1', 'c'}, {'a', 'b', 'c'}};
-    to_stream(cout, vse);
+    cout << vse << endl;
+
+    map<string, vector<set<char>>> m;
+    m.emplace("aaa", vse);
+    m.emplace("aaa", vse);
+    m.emplace("bbb", vse);
+    m.emplace("ccc", vse);
+
+    cout << m << endl;
     return 0;
 }
