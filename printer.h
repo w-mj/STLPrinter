@@ -84,7 +84,7 @@ template<typename K, typename V> std::ostream& operator<<(std::ostream &ss, cons
 
 /* defines */
 template<IterableContainer T,
-        typename I = decltype(*std::declval<T>().begin()),
+        typename I = std::remove_reference_t<decltype(*std::declval<T>().begin())>,
         typename F = std::ostream&(*)(std::ostream&, const I &)>
 std::ostream& iterable_to_stream(std::ostream &ss, const T& v, const std::string& delimiter=",",
                                  F op = [](std::ostream &ss, const I& v)->std::ostream&{ return ss << v; }){
