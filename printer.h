@@ -13,6 +13,8 @@
 #include <list>
 #include <unordered_map>
 #include <unordered_set>
+#include <queue>
+#include <stack>
 
 template <typename T, typename = void>
 struct is_iterable_v : std::false_type {};
@@ -52,6 +54,9 @@ concept ListContainer = is_instance<T, std::vector, std::forward_list, std::list
 
 template<typename T>
 concept IterableContainer = ListContainer<T> || MapContainer<T> || SetContainer<T>;
+
+template<typename T>
+concept ContainerAdapter = is_instance<T, std::queue, std::stack, std::priority_queue>();
 
 template <typename>
 struct bracket {};
@@ -114,4 +119,25 @@ std::ostream& operator<<(std::ostream &ss, const T& v) {
 template<typename K, typename V>
 std::ostream& operator<<(std::ostream &ss, const std::pair<K, V>& v) {
     return ss << "(" << v.first << "->" << v.second << ")";
+}
+
+template<typename T, typename=void>
+struct has_top : std::false_type {};
+template<typename T>
+struct has_top<T, std::void_t<decltype(std::declval<T>().top())>> : std::true_type {};
+
+template<typename T, typename=void>
+struct has_front : std::false_type {};
+template<typename T>
+struct has_front<T, std::void_t<decltype(std::declval<T>().front())>> : std::true_type {};
+
+template<ContainerAdapter T>
+std::ostream& operator<<(std::ostream &ss, const T& v) {
+    static_assert(has_top<T>::value || has_front<T>::value, "Must have top or front method");
+    if constexpr (has_top<T>::value) {
+        ss << "top[" << v.top() << "]";
+    } else if constexpr (has_front<T>::value) {
+        ss << "front[" << v.front() << "]";
+    }
+    return ss;
 }

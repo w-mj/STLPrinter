@@ -38,5 +38,16 @@ int main() {
     m.emplace("ccc", vse);
 
     cout << m << endl;
+
+    queue<int> q;
+    q.push(1);
+    q.push(2);
+    q.push(3);
+    stack<int> s;
+    s.push(1);
+    s.push(2);
+    s.push(3);
+    cout << q << endl;
+    cout << s << endl;
     return 0;
 }
